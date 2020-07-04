@@ -1,17 +1,16 @@
 <template>
   <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-
       <div class="title-container">
         <h3 class="title">用户登录</h3>
       </div>
-
       <el-form-item prop="shop">
         <el-select v-model="shopCode" placeholder="请选择" style="width:100%">
           <el-option v-for="item in shopList"
                     :key="item.value"
                     :label="item.label"
-                    :value="item.value">
+                    :value="item.value"
+                    >
           </el-option>
         </el-select>
       </el-form-item>
@@ -83,10 +82,10 @@ export default {
     }
     return {
       shopCode: '1',
-      shopList:[
-        {label:'天天鲜花店',value:'1'},
-        {label:'钟意你店',value:'2'}
-        ],
+      shopList: [
+        { label: '天天鲜花店', value: '1' },
+        { label: '钟遇你店', value: '2' }
+      ],
       loginForm: {
         username: 'admin',
         password: '12345'
