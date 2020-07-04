@@ -83,9 +83,6 @@ export default {
       return ''
     }
   },
-  computed: {
-    ...mapGetters(['name'])
-  },
   data() {
     return {
       sourceTypeList: [
@@ -114,6 +111,9 @@ export default {
         money: ''
       }
     }
+  },
+  computed: {
+    ...mapGetters(['name'])
   },
   mounted() {
     this.refresh()
