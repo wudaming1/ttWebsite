@@ -78,6 +78,19 @@ export const constantRoutes = [
   },
 
   {
+    path: '/history',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'History',
+        component: () => import('@/views/history/index.vue'),
+        meta: { title: '历史记录', icon: 'form' }
+      }
+    ]
+  },
+
+  {
     path: '/form',
     component: Layout,
     children: [
