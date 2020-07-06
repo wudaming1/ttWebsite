@@ -91,6 +91,19 @@ export const constantRoutes = [
   },
 
   {
+    path: '/report',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Report',
+        component: () => import('@/views/report/index.vue'),
+        meta: { title: '报表', icon: 'form' }
+      }
+    ]
+  },
+
+  {
     path: '/form',
     component: Layout,
     children: [
