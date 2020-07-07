@@ -34,48 +34,68 @@
       </el-row>
     </div>
 
+    <div class="vip-charge-panel">
+      <div>充值</div>
+      <el-form :model="chargeInfo" label-position="left" label-width="100px">
+        <el-form-item label="手机号：">
+          <el-input v-model="chargeInfo.phone" disabled />
+        </el-form-item>
+        <el-form-item label="充值金额：">
+          <el-select v-model="chargeInfo.money" placeholder="请选择金额">
+            <el-option label="100元" value="100" />
+            <el-option label="200元" value="200" />
+            <el-option label="500元" value="500" />
+            <el-option label="1000元" value="1000" />
+          </el-select>
+        </el-form-item>
+        <el-button type="primary" :disabled="disabled" @click="preformCharge">充值</el-button>
+      </el-form>
+    </div>
+    <div class="vip-charge-panel">
+      <div>消费</div>
+      <el-form :model="consumeInfo" label-position="left" label-width="100px">
+        <el-form-item label="手机号：">
+          <el-input v-model="consumeInfo.phone" disabled />
+        </el-form-item>
+        <el-form-item label="充值金额：">
+          <el-input v-model="consumeInfo.money" placeholder="请输入消费金额，正整数！" />
+        </el-form-item>
+        <el-button type="primary" :disabled="disabled" @click="preformConsume">消费</el-button>
+      </el-form>
+    </div>
   </div>
 </template>
 
 <script>
-import { getVipInfo } from '@/api/vip'
-import { isMobileNumber } from '@/utils/validate'
-import { formatTime2Date2} from '@/utils/format'
+import { getVipInfo, charge, consume } from '@/api/vip'
+import { isMobileNumber, isMoney } from '@/utils/validate'
+import { formatTime2Date2 } from '@/utils/format'
 export default {
   data() {
     return {
       phoneNum: 15201555981,
       vipInfo: {},
-      sourceTypeList: [
-        { code: 'wx', value: '微信' },
-        { code: 'zfb', value: '支付宝' },
-        { code: 'xj', value: '现金' }
-      ],
-      form: {
-        startTime: new Date(),
-        endTime: new Date()
-      },
-      chartData: {
-        columns: ['日期', '微信', '支付宝', '现金'],
-        rows: [
-          { 日期: '7月1日', 微信: 1393, 支付宝: 1093, 现金: 32 },
-          { 日期: '7月2日', 微信: 3530, 支付宝: 3230, 现金: 26 },
-          { 日期: '7月3日', 微信: 2923, 支付宝: 2623, 现金: 76 },
-          { 日期: '7月4日', 微信: 1723, 支付宝: 1423, 现金: 49 },
-          { 日期: '7月5日', 微信: 3792, 支付宝: 3492, 现金: 323 },
-          { 日期: '7月6日', 微信: 4593, 支付宝: 4293, 现金: 78 }
-        ]
-      }
+      chargeInfo: {},
+      consumeInfo: {},
+      disabled: true
     }
   },
   methods: {
+    refresh() {
+      this.chargeInfo = {}
+      this.consumeInfo = {}
+      this.queryVip()
+    },
     queryVip() {
+      this.vipInfo = {}
+      this.chargeInfo = {}
+      this.consumeInfo = {}
+      this.disabled = true
       if (!isMobileNumber(this.phoneNum)) {
         this.$message({
           message: '请输入正确的手机号，纯数字！',
           type: 'error'
         })
-        this.vipInfo = {}
         return
       }
       const params = {
@@ -86,26 +106,83 @@ export default {
         console.log(res)
         this.vipInfo = res.data
         this.vipInfo.createTime = formatTime2Date2(this.vipInfo.createTime)
+        this.chargeInfo.phone = res.data.phone
+        this.chargeInfo.id = res.data._id
+        this.consumeInfo.phone = res.data.phone
+        this.consumeInfo.id = res.data._id
+        this.disabled = false
       })
+    },
+    preformCharge() {
+      if (isMoney(this.chargeInfo.money)) {
+        const params = {
+          phone: this.chargeInfo.phone,
+          money: parseInt(this.chargeInfo.money)
+        }
+        charge(params).then(res => {
+          console.log(res)
+          this.$message({
+            message: res.message,
+            type: 'success'
+          })
+          this.refresh()
+        })
+      } else {
+        this.$message({
+          message: '请输入金额',
+          type: 'error'
+        })
+      }
+    },
+    preformConsume() {
+      if (isMoney(this.consumeInfo.money)) {
+        const params = {
+          phone: this.consumeInfo.phone,
+          money: parseInt(this.consumeInfo.money)
+        }
+        consume(params).then(res => {
+          console.log(res)
+          this.$message({
+            message: res.message,
+            type: 'success'
+          })
+          this.refresh()
+        })
+      } else {
+        this.$message({
+          message: '请输入金额',
+          type: 'error'
+        })
+      }
     }
   }
 }
 </script>
 
-<style>
+<style lang='scss'>
+.vip-charge-panel{
+  display: inline-block;
+  text-align: center;
+  width: 500px;
+  background-color: #99a9bf;
+  padding: 20px;
+  margin-bottom: 20px;
+  .el-select{
+    width: 100%;
+  }
+}
+
 .vip-info-panel{
   text-align: center;
   font-size: 20px;
   background-color: #99a9bf;
   padding: 20px;
+  margin-bottom: 20px;
 }
 
 .el-row {
   margin-bottom: 20px;
   margin-top: 20px;
-  &:last-child {
-    margin-bottom: 0;
-  }
 }
 .el-col {
   border-radius: 4px;

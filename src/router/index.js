@@ -49,7 +49,7 @@ export const constantRoutes = [
     redirect: '/dashboard',
     children: [{
       path: 'dashboard',
-      name: 'Dashboard',
+      name: '收银台',
       component: () => import('@/views/dashboard/index'),
       meta: { title: '收银台', icon: 'dashboard' }
     }]
@@ -106,12 +106,21 @@ export const constantRoutes = [
   {
     path: '/vip',
     component: Layout,
+    name: 'VIP',
+    redirect: '/vip/index',
+    meta: { title: '会员', icon: 'form' },
     children: [
       {
         path: 'index',
         name: 'VIP',
         component: () => import('@/views/vip/index.vue'),
-        meta: { title: '会员', icon: 'form' }
+        meta: { title: '消费', icon: 'form' }
+      },
+      {
+        path: 'create',
+        name: 'VIP_CREATE',
+        component: () => import('@/views/vip/index.vue'),
+        meta: { title: '创建', icon: 'form' }
       }
     ]
   },

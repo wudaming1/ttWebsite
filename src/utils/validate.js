@@ -27,3 +27,7 @@ export function isMobileNumber(value) {
   }
   return false
 }
+
+export function isMoney(value) {
+  return /^[1-9]\d*$/.test(value)
+}
