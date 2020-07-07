@@ -17,3 +17,13 @@ export function isExternal(path) {
 export function validUsername(str) {
   return str && str.length > 4
 }
+
+export function isMobileNumber(value) {
+  if (value === null) {
+    return false
+  }
+  if (/^\d{11}$/.test(value)) {
+    return true
+  }
+  return false
+}

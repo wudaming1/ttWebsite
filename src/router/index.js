@@ -104,6 +104,19 @@ export const constantRoutes = [
   },
 
   {
+    path: '/vip',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'VIP',
+        component: () => import('@/views/vip/index.vue'),
+        meta: { title: '会员', icon: 'form' }
+      }
+    ]
+  },
+
+  {
     path: '/form',
     component: Layout,
     children: [
