@@ -32,10 +32,10 @@ module.exports = {
   devServer: {
     proxy: {
       '/flower-tt': {
-      target: 'http://localhost:3000',   //代理接口
-      changeOrigin: true,
-      pathRewrite: {
-        '^/flower-tt': '/'    //代理的路径
+        target: 'http://localhost:3000', // 代理接口
+        changeOrigin: true,
+        pathRewrite: {
+          '^/flower-tt': '/' // 代理的路径
         }
       }
     }

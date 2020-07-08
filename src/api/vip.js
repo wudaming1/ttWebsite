@@ -28,3 +28,27 @@ export function consume(data) {
     data
   })
 }
+
+export function getComsumeHistory(data) {
+  return request({
+    url: '/flower-tt/vip/queryRecord',
+    method: 'post',
+    data
+  })
+}
+
+export function queryVipList(data) {
+  return request({
+    url: '/flower-tt/vip/list',
+    method: 'post',
+    data
+  })
+}
+
+export function modifyVipPassword(data) {
+  return request({
+    url: '/flower-tt/vip/modifyPassword',
+    method: 'post',
+    data
+  })
+}

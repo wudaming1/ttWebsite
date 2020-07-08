@@ -31,3 +31,8 @@ export function isMobileNumber(value) {
 export function isMoney(value) {
   return /^[1-9]\d*$/.test(value)
 }
+
+export function isEmpty(value) {
+  if (value === undefined || value === null || value === '') { return true }
+  return false
+}

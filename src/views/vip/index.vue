@@ -2,34 +2,27 @@
   <div class="app-container">
     <el-form :inline="true">
       <el-form-item label="手机号：">
-        <el-input v-model="phoneNum" placeholder="请输入会员手机号" />
+        <el-input v-model="phoneNum" placeholder="请输入会员手机号" clearable />
       </el-form-item>
       <el-form-item label>
         <el-button type="primary" @click="queryVip">查詢</el-button>
+        <el-button type="primary" @click="showAddDialog">新增</el-button>
       </el-form-item>
     </el-form>
     <div class="vip-info-panel">
-      <div>会员信息</div>
+      <div>会员--{{ vipInfo.name }}</div>
       <el-row :gutter="20">
         <el-col :span="6">
-          <div class="grid-content bg-purple">
-            电话号码：{{ vipInfo.phone }}
-          </div>
+          <div class="grid-content bg-purple">电话号码：{{ vipInfo.phone }}</div>
         </el-col>
         <el-col :span="6">
-          <div class="grid-content bg-purple">
-            创建时间：{{ vipInfo.createTime }}
-          </div>
+          <div class="grid-content bg-purple">创建时间：{{ vipInfo.createTime }}</div>
         </el-col>
         <el-col :span="6">
-          <div class="grid-content bg-purple">
-            余额：{{ vipInfo.money }} 元
-          </div>
+          <div class="grid-content bg-purple">余额：{{ vipInfo.money }} 元</div>
         </el-col>
         <el-col :span="6">
-          <div class="grid-content bg-purple">
-            总共充值：{{ vipInfo.totalCharge }} 元
-          </div>
+          <div class="grid-content bg-purple">总共充值：{{ vipInfo.totalCharge }} 元</div>
         </el-col>
       </el-row>
     </div>
@@ -40,12 +33,15 @@
         <el-form-item label="手机号：">
           <el-input v-model="chargeInfo.phone" disabled />
         </el-form-item>
+        <el-form-item label="密码：">
+          <el-input v-model="chargeInfo.password" type="password" />
+        </el-form-item>
         <el-form-item label="充值金额：">
           <el-select v-model="chargeInfo.money" placeholder="请选择金额">
-            <el-option label="100元" value="100" />
-            <el-option label="200元" value="200" />
-            <el-option label="500元" value="500" />
-            <el-option label="1000元" value="1000" />
+            <el-option label="300元 送30元" value="330" />
+            <el-option label="500元 送80元" value="580" />
+            <el-option label="1000元 送200" value="1200" />
+            <el-option label="2000元 送450" value="2450" />
           </el-select>
         </el-form-item>
         <el-button type="primary" :disabled="disabled" @click="preformCharge">充值</el-button>
@@ -57,17 +53,36 @@
         <el-form-item label="手机号：">
           <el-input v-model="consumeInfo.phone" disabled />
         </el-form-item>
+        <el-form-item label="密码：">
+          <el-input v-model="consumeInfo.password" type="password" />
+        </el-form-item>
         <el-form-item label="充值金额：">
           <el-input v-model="consumeInfo.money" placeholder="请输入消费金额，正整数！" />
         </el-form-item>
         <el-button type="primary" :disabled="disabled" @click="preformConsume">消费</el-button>
       </el-form>
     </div>
+    <el-dialog title="新增会员" :visible.sync="addDialog.show">
+      <el-form ref="addDialog" :model="addDialog" :rules="addDialogRules" label-position="right">
+        <el-form-item label="手机号：" prop="phoneNum" label-width="120px">
+          <el-input v-model="addDialog.phoneNum" placeholder="请输入会员手机号" clearable />
+        </el-form-item>
+        <el-form-item label="姓名：" prop="name" label-width="120px">
+          <el-input v-model="addDialog.name" placeholder="请输入会员姓名" />
+        </el-form-item>
+        <el-form-item label="密码：" prop="password" label-width="120px">
+          <el-input v-model="addDialog.password" placeholder="请输入密码" />
+        </el-form-item>
+        <el-form-item label-width="120px">
+          <el-button type="primary" @click="addVip">新增</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getVipInfo, charge, consume } from '@/api/vip'
+import { getVipInfo, charge, consume, createVip } from '@/api/vip'
 import { isMobileNumber, isMoney } from '@/utils/validate'
 import { formatTime2Date2 } from '@/utils/format'
 export default {
@@ -77,7 +92,19 @@ export default {
       vipInfo: {},
       chargeInfo: {},
       consumeInfo: {},
-      disabled: true
+      disabled: true,
+      addDialog: {
+        show: false,
+        phoneNum: '',
+        money: 0,
+        name: '',
+        password: ''
+      },
+      addDialogRules: {
+        name: [{ required: true, message: '请输入姓名', trigger: 'blur' }],
+        phoneNum: [{ required: true, message: '请输入手机号', trigger: 'blur' }],
+        password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
+      }
     }
   },
   methods: {
@@ -113,11 +140,15 @@ export default {
         this.disabled = false
       })
     },
+    showAddDialog() {
+      this.addDialog.show = true
+    },
     preformCharge() {
       if (isMoney(this.chargeInfo.money)) {
         const params = {
           phone: this.chargeInfo.phone,
-          money: parseInt(this.chargeInfo.money)
+          money: parseInt(this.chargeInfo.money),
+          password: this.chargeInfo.password
         }
         charge(params).then(res => {
           console.log(res)
@@ -134,11 +165,39 @@ export default {
         })
       }
     },
+    addVip() {
+      this.$refs['addDialog'].validate((valid) => {
+        if (!valid) {
+          return
+        }
+      })
+      if (!isMobileNumber(this.addDialog.phoneNum)) {
+        this.$message({
+          message: '请输入正确的手机号！',
+          type: 'info'
+        })
+        return
+      }
+
+      const params = {
+        phone: this.addDialog.phoneNum,
+        money: 0,
+        password: this.addDialog.password,
+        name: this.addDialog.name
+      }
+      createVip(params).then(res => {
+        console.log(res)
+        this.vipInfo = res.data
+        this.vipInfo.createTime = formatTime2Date2(this.vipInfo.createTime)
+        this.addDialog.show = false
+      })
+    },
     preformConsume() {
       if (isMoney(this.consumeInfo.money)) {
         const params = {
           phone: this.consumeInfo.phone,
-          money: parseInt(this.consumeInfo.money)
+          money: parseInt(this.consumeInfo.money),
+          password: this.consumeInfo.password
         }
         consume(params).then(res => {
           console.log(res)
@@ -160,19 +219,19 @@ export default {
 </script>
 
 <style lang='scss'>
-.vip-charge-panel{
+.vip-charge-panel {
   display: inline-block;
   text-align: center;
   width: 500px;
   background-color: #99a9bf;
   padding: 20px;
   margin-bottom: 20px;
-  .el-select{
+  .el-select {
     width: 100%;
   }
 }
 
-.vip-info-panel{
+.vip-info-panel {
   text-align: center;
   font-size: 20px;
   background-color: #99a9bf;
