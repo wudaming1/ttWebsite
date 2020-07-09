@@ -112,7 +112,7 @@ export const constantRoutes = [
     children: [
       {
         path: 'index',
-        name: 'VIP',
+        name: 'Consume',
         component: () => import('@/views/vip/index.vue'),
         meta: { title: '消费', icon: 'form' }
       },
