@@ -33,6 +33,13 @@ export function isMoney(value) {
 }
 
 export function isEmpty(value) {
-  if (value === undefined || value === null || value === '') { return true }
-  return false
+  return value === undefined || value === null || value === ''
+}
+
+export function moneyValidator(rule, value, callback) {
+  if (!isMoney(value)) {
+    callback(new Error('请输入正确的金额！'))
+  } else {
+    callback()
+  }
 }

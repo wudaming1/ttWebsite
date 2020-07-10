@@ -21,6 +21,7 @@ service.interceptors.request.use(
       // please modify it according to the actual situation
       config.headers['X-Token'] = getToken()
     }
+    config.headers['shop'] = 'tt'
     return config
   },
   error => {

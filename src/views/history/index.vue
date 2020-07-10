@@ -7,7 +7,7 @@
       <el-form-item label="結束日期：">
         <el-date-picker v-model="form.endTime" type="date" placeholder="选择結束日期" />
       </el-form-item>
-      <el-form-item label>
+      <el-form-item>
         <el-button type="primary" @click="getList">查詢</el-button>
       </el-form-item>
     </el-form>
