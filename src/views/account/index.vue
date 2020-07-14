@@ -165,7 +165,6 @@ export default {
         amount: this.dialog.amount,
         desc: this.dialog.desc
       }
-      debugger
       if (this.dialog.isAdd) {
         add(params).then(res => {
           this.$message({
