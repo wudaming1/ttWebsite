@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-form :inline="true">
       <el-form-item label="手机号：">
-        <el-input v-model="form.phone" />
+        <el-input v-model="form.phone" clearable/>
       </el-form-item>
       <el-form-item label="起始日期：">
         <el-date-picker v-model="form.startTime" type="date" placeholder="选择起始日期" />
@@ -25,6 +25,7 @@
     />
     <el-table :data="historyList" style="width: 100%" border stripe>
       <el-table-column prop="createTime" label="时间" :formatter="dateFormat" width="180" />
+      <el-table-column prop="phone" label="手机号" width="180" />
       <el-table-column label="类型" width="180">
         <template slot-scope="scope">{{ scope.row | type }}</template>
       </el-table-column>
@@ -52,7 +53,7 @@ export default {
       form: {
         startTime: null,
         endTime: null,
-        phone: 15201555981
+        phone: null
       },
       pagination: {
         current: 1,
