@@ -88,7 +88,7 @@ import { formatTime2Date2 } from '@/utils/format'
 export default {
   data() {
     return {
-      phoneNum: 15201555981,
+      phoneNum: null,
       vipInfo: {},
       chargeInfo: {},
       consumeInfo: {},
@@ -130,7 +130,6 @@ export default {
         phone: parseInt(this.phoneNum)
       }
       getVipInfo(params).then(res => {
-        console.log(res)
         this.vipInfo = res.data
         this.vipInfo.createTime = formatTime2Date2(this.vipInfo.createTime)
         this.chargeInfo.phone = res.data.phone
@@ -186,10 +185,11 @@ export default {
         name: this.addDialog.name
       }
       createVip(params).then(res => {
-        console.log(res)
         this.vipInfo = res.data
         this.vipInfo.createTime = formatTime2Date2(this.vipInfo.createTime)
         this.addDialog.show = false
+        this.phoneNum = params.phone
+        this.queryVip()
       })
     },
     preformConsume() {

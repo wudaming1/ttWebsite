@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-form :inline="true">
       <el-form-item label="手机号：">
-        <el-input v-model="form.phone" clearable/>
+        <el-input v-model="form.phone" placeholder="请输入会员手机号" clearable />
       </el-form-item>
       <el-form-item label="起始日期：">
         <el-date-picker v-model="form.startTime" type="date" placeholder="选择起始日期" />
@@ -10,7 +10,7 @@
       <el-form-item label="結束日期：">
         <el-date-picker v-model="form.endTime" type="date" placeholder="选择結束日期" />
       </el-form-item>
-      <el-form-item label>
+      <el-form-item>
         <el-button type="primary" @click="getList">查詢</el-button>
       </el-form-item>
     </el-form>
@@ -39,6 +39,7 @@ import {
   getComsumeHistory
 } from '@/api/vip'
 import { formatTime2Date } from '@/utils/format'
+
 export default {
   filters: {
     type: function(data) {

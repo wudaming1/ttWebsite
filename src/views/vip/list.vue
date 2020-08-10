@@ -33,7 +33,7 @@
     <el-dialog title="修改密码" :visible.sync="modifyDialog.show">
       <el-form ref="modifyDialog" :model="modifyDialog" :rules="modifyDialogRules" label-width="120px">
         <el-form-item label="手机号码：" prop="phone">
-          <el-input v-model="modifyDialog.phone" disabled/>
+          <el-input v-model="modifyDialog.phone" disabled />
         </el-form-item>
         <el-form-item label="旧密码：" prop="oldPassword">
           <el-input v-model="modifyDialog.oldPassword" />
@@ -62,7 +62,7 @@ export default {
         size: 20,
         total: 0
       },
-      phoneNum: 15201555981,
+      phoneNum: null,
       vipList: [],
       modifyDialog: {
         show: false,
