@@ -52,3 +52,10 @@ export function modifyVipPassword(data) {
     data
   })
 }
+export function yearReport(data) {
+  return request({
+    url: '/flower-tt/vip/getYearReport',
+    method: 'post',
+    data
+  })
+}

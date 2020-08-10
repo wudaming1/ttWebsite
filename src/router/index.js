@@ -130,7 +130,7 @@ export const constantRoutes = [
         meta: { title: '消费', icon: 'form' }
       },
       {
-        path: 'hisoory',
+        path: 'history',
         name: 'VIP_History',
         component: () => import('@/views/vip/history.vue'),
         meta: { title: '历史记录', icon: 'form' }
@@ -140,6 +140,12 @@ export const constantRoutes = [
         name: 'VIP_List',
         component: () => import('@/views/vip/list.vue'),
         meta: { title: '会员列表', icon: 'form' }
+      },
+      {
+        path: 'report',
+        name: 'Report',
+        component: () => import('@/views/vip/report.vue'),
+        meta: { title: '年度报告', icon: 'form' }
       }
     ]
   },
