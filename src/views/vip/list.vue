@@ -4,10 +4,17 @@
       <el-form-item label="手机号：">
         <el-input v-model="phoneNum" placeholder="请输入会员手机号" clearable />
       </el-form-item>
-      <el-form-item label>
+      <el-form-item>
         <el-button type="primary" @click="queryVip">查询</el-button>
       </el-form-item>
     </el-form>
+    <el-row :gutter="20">
+      <el-col :span="6">
+        <div class="bg-purple grid-content">总计充值金额：{{ summary.total }}</div>
+      </el-col>
+      <el-col :span="6"><div class="bg-purple grid-content">可用总余额：{{ summary.left }}</div></el-col>
+      <el-col :span="6"><div class="bg-purple grid-content">总计消费金额：{{ summary.consume }}</div></el-col>
+    </el-row>
     <!-- <el-pagination
       :current-page="pagination.current"
       :page-sizes="[10, 20, 50, 100]"
@@ -50,13 +57,18 @@
 </template>
 
 <script>
-import { queryVipList, modifyVipPassword } from '@/api/vip'
+import { queryVipList, modifyVipPassword, getSummary } from '@/api/vip'
 import { isMobileNumber, isEmpty } from '@/utils/validate'
 import { formatTime2Date2 } from '@/utils/format'
 
 export default {
   data() {
     return {
+      summary: {
+        total: 0,
+        left: 0,
+        consume: 0
+      },
       pagination: {
         current: 1,
         size: 20,
@@ -81,6 +93,11 @@ export default {
         newPassword: ''
       }
     }
+  },
+  mounted() {
+    getSummary().then(res => {
+      this.summary = res.data
+    })
   },
   methods: {
     refresh() {
@@ -149,19 +166,20 @@ export default {
 </script>
 
 <style lang='scss'>
-.vip-charge-panel{
+.vip-charge-panel {
   display: inline-block;
   text-align: center;
   width: 500px;
   background-color: #99a9bf;
   padding: 20px;
   margin-bottom: 20px;
-  .el-select{
+
+  .el-select {
     width: 100%;
   }
 }
 
-.vip-info-panel{
+.vip-info-panel {
   text-align: center;
   font-size: 20px;
   background-color: #99a9bf;
@@ -173,18 +191,23 @@ export default {
   margin-bottom: 20px;
   margin-top: 20px;
 }
+
 .el-col {
   border-radius: 4px;
 }
+
 .bg-purple-dark {
   background: #99a9bf;
 }
+
 .bg-purple {
   background: #d3dce6;
 }
+
 .bg-purple-light {
   background: #e5e9f2;
 }
+
 .grid-content {
   border-radius: 4px;
   height: 36px;
@@ -194,6 +217,7 @@ export default {
   padding-left: 20px;
   vertical-align: middle;
 }
+
 .row-bg {
   padding: 10px 0;
   background-color: #f9fafc;

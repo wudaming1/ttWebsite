@@ -45,6 +45,13 @@ export function queryVipList(data) {
   })
 }
 
+export function getSummary() {
+  return request({
+    url: '/flower-tt/vip/summary',
+    method: 'get'
+  })
+}
+
 export function modifyVipPassword(data) {
   return request({
     url: '/flower-tt/vip/modifyPassword',
