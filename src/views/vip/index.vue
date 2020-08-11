@@ -36,7 +36,7 @@
         <el-form-item label="密码：">
           <el-input v-model="chargeInfo.password" type="password" />
         </el-form-item>
-        <el-form-item label="充值金额：">
+        <el-form-item label="金额：">
           <el-select v-model="chargeInfo.money" placeholder="请选择金额">
             <el-option label="300元 送30元" value="330" />
             <el-option label="500元 送80元" value="580" />
@@ -56,7 +56,7 @@
         <el-form-item label="密码：">
           <el-input v-model="consumeInfo.password" type="password" />
         </el-form-item>
-        <el-form-item label="充值金额：">
+        <el-form-item label="金额：">
           <el-input v-model="consumeInfo.money" placeholder="请输入消费金额，正整数！" />
         </el-form-item>
         <el-button type="primary" :disabled="disabled" @click="preformConsume">消费</el-button>
