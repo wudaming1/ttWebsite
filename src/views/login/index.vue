@@ -2,7 +2,7 @@
   <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
       <div class="title-container">
-        <h3 class="title">天天和鲜花坊用户登录</h3>
+        <h3 class="title">天天鲜花坊---用户登录</h3>
       </div>
       <el-form-item prop="shop">
         <el-select v-model="shopCode" placeholder="请选择" style="width:100%">
