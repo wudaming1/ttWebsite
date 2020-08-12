@@ -6,12 +6,12 @@
       </div>
       <el-form-item prop="shop">
         <el-select v-model="shopCode" placeholder="请选择" style="width:100%">
-          <el-option v-for="item in shopList"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                    >
-          </el-option>
+          <el-option
+            v-for="item in shopList"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
         </el-select>
       </el-form-item>
       <el-form-item prop="username">
@@ -52,7 +52,7 @@
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
 
       <div class="tips">
-        <span style="margin-right:20px;">用户名: admin</span>
+        <span style="margin-right:20px;">用户名: liyun</span>
         <span> 密码: 至少6位</span>
       </div>
 
@@ -87,8 +87,8 @@ export default {
         { label: '钟遇你店', value: '2' }
       ],
       loginForm: {
-        username: 'admin',
-        password: '12345'
+        username: 'liyun',
+        password: '123456'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
