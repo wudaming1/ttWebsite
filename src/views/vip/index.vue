@@ -39,9 +39,9 @@
         <el-form-item label="金额：">
           <el-select v-model="chargeInfo.money" placeholder="请选择金额">
             <el-option label="300元 送30元" value="330" />
-            <el-option label="500元 送80元" value="580" />
-            <el-option label="1000元 送200" value="1200" />
-            <el-option label="2000元 送450" value="2450" />
+            <el-option label="500元 送75元" value="575" />
+            <el-option label="1000元 送180" value="1180" />
+            <el-option label="2000元 送400" value="2400" />
           </el-select>
         </el-form-item>
         <el-button type="primary" :disabled="disabled" @click="preformCharge">充值</el-button>
